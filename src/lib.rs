@@ -38,6 +38,16 @@ impl Player {
 
 }
 
+pub struct Coordinates {
+    row: u8,
+    column: u8,
+}
+
+impl Coordinates {
+    pub fn new(row: u8, column: u8) -> Self {
+        Self { row, column }
+    }
+}
 // the board of the game
 pub struct Board {
 }
