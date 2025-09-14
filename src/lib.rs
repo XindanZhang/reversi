@@ -36,18 +36,25 @@ impl Player {
         }
     }
 
+    pub fn display_cell(cell: Option<Player>) -> char {
+        match cell {
+            Some(player) => player.as_char(),
+            None => '.',
+        }
+    }
+
 }
 
 pub struct Coordinates {
     pub row: u8,
-    pub column: u8,
+    pub col: u8,
 }
 
 impl Coordinates {
-    pub fn new(row: u8, column: u8) -> Self {
-        Self { row, column }
+    pub fn new(row: u8, col: u8) -> Self {
+        Self { row, col }
     }
+
 }
 // the board of the game
-pub struct Board {
-}
+pub type Board = [[Option<Player>; 8]; 8];
