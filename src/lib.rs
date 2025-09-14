@@ -39,8 +39,8 @@ impl Player {
 }
 
 pub struct Coordinates {
-    row: u8,
-    column: u8,
+    pub row: u8,
+    pub column: u8,
 }
 
 impl Coordinates {
