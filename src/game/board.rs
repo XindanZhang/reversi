@@ -19,7 +19,7 @@ pub fn create_board() -> Board {
     board[4][3] = Some(Player::Black);
     board[4][4] = Some(Player::White);
 
-    return board
+    board
 }
 
 
