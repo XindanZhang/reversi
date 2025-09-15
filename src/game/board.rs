@@ -4,7 +4,7 @@ pub fn create_board() -> Board {
     let mut board: Board = [[None; 8]; 8];
 
     /*
-        abcdefgh
+      abcdefgh
     a ........
     b ........
     c ........
@@ -25,5 +25,16 @@ pub fn create_board() -> Board {
 
 pub fn display_board(board: &Board) {
     println!("  abcdefgh");
+    for (i, row) in board.iter().enumerate() {
+        // prints the first column letter
+        print!("{}", char::from_u8(b'a' + i as u8).unwrap());
+        for cell in row {
+            // prints the specific row cell
+            // fn display_cell() is in lib.rs
+            print!("{}", Player::display_cell(cell));
+        }
+    }
+
+
 }
 
