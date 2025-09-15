@@ -1,11 +1,16 @@
 use crate::{Coordinates, InputError, Player};
 use std::io::{self, Write};
 
+pub fn print_prompt_text(player: Player) {
+    print!("Enter move for colour {} (RowCol): ", player.as_char());
+    io::stdout().flush().expect("Failed to flush stdout.");
+}
+
 pub fn get_input(player: Player) -> Result<Coordinates, InputError> {
     // gets the input from the user
-    print!("Enter move for colour {} (RowCol): ", player.as_char());
+    // print!("Enter move for colour {} (RowCol): ", player.as_char());
     // flushes the buffer to display the user prompt.
-    io::stdout().flush().expect("Failed to flush stdout.");
+    // io::stdout().flush().expect("Failed to flush stdout.");
 
     // reads the input from the user
     let mut coordinates = String::new();

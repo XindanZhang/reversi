@@ -1,8 +1,8 @@
 use crate::game::board::{create_board, display_board};
 use crate::game::moves::{has_valid_move, is_valid_move, make_move};
-use crate::io::input::get_input;
+use crate::io::input::{get_input, print_prompt_text};
 use crate::io::output::{print_invalid_move, print_no_valid_move, winner_output};
-use crate::{Board, Coordinates, InputError, Player};
+use crate::{Board, InputError, Player};
 
 pub struct Game {
     board: Board,
@@ -21,7 +21,7 @@ impl Game {
 
     pub fn run(&mut self) {
         // displays the initial board
-        // display_board(&self.board);
+        display_board(&self.board);
         loop {
             // checks if the player has a valid move
             // and if not, prints a message
@@ -41,22 +41,21 @@ impl Game {
                 continue;
             }
 
-            // player has valid moves, gets the input
+            // player has valid moves, get input
+            // shows board after a successful move
             loop {
-                display_board(&self.board);
+                print_prompt_text(self.player);
                 match get_input(self.player) {
                     Ok(coordinates) => {
-                        match is_valid_move(&self.board, &self.player, &coordinates) {
-                            Ok(_) => {
-                                if make_move(&mut self.board, &self.player, &coordinates) {
-                                    self.player = self.player.next();
-                                    break;
-                                }
+                        if is_valid_move(&self.board, &self.player, &coordinates) {
+                            if make_move(&mut self.board, &self.player, &coordinates) {
+                                display_board(&self.board);
+                                self.player = self.player.next();
+                                break;
                             }
-                            Err(_) => {
-                                print_invalid_move();
-                                continue;
-                            }
+                        } else {
+                            print_invalid_move();
+                            continue;
                         }
                     }
                     // if the input is invalid format

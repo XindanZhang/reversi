@@ -16,5 +16,5 @@ pub fn print_invalid_move() {
 
 // prints out the user has no valid move
 pub fn print_no_valid_move(player: Player) {
-    println!("{} has no valid move.", player.as_char());
+    println!("{} player has no valid move.", player.as_char());
 }
