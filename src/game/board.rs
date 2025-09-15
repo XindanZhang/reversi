@@ -3,7 +3,6 @@ use crate::{Board, Player};
 // Creates the board in the initial state.
 pub fn create_board() -> Board {
     let mut board: Board = [[None; 8]; 8];
-
     /*
       abcdefgh
     a ........
@@ -35,8 +34,8 @@ pub fn cnt_black_white(board: &Board) -> (u8, u8) {
                 None => {}
             }
         }
-    return (black_cnt, white_cnt);
     }
+    (black_cnt, white_cnt)
 }
 
 // Displays the board in the required format.

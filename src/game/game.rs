@@ -7,12 +7,14 @@ pub struct Game {
 
 impl Game {
     pub fn new() -> Self {
-        Game {
+        Self {
             board: create_board(),
         }
     }
 
     pub fn run(&self) {
         // TODO: Implement the game.
+        display_board(&self.board);
+
     }
 }
