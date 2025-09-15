@@ -1,12 +1,12 @@
 
 pub struct Game {
-
+    board: Board,
 }
 
 impl Game {
     pub fn new() -> Self {
         Game {
-
+            board: create_board(),
         }
     }
 
