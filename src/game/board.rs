@@ -33,6 +33,7 @@ pub fn display_board(board: &Board) {
             // fn display_cell() is in lib.rs
             print!("{}", Player::display_cell(cell));
         }
+        println!();
     }
 
 
