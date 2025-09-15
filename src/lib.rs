@@ -4,6 +4,8 @@ pub mod io;
 pub use game::game::Game;
 use crate::game::board::cnt_black_white;
 
+use crate::io::output::{print_invalid_move, print_no_valid_move};
+
 
 // black and white are the players
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -71,5 +73,6 @@ impl Coordinates {
     }
 
 }
+
 // the board of the game
 pub type Board = [[Option<Player>; 8]; 8];
