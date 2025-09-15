@@ -1,5 +1,7 @@
-use crate::{Board, Player, Coordinates};
+use crate::{Board, Player, MoveError};
 use crate::game::board::{create_board, display_board};
+use crate::game::turns::{has_valid_move, make_move};
+use crate::io::input::get_input;
 use crate::io::output::{winner_output, print_invalid_move, print_no_valid_move};
 
 pub struct Game {
@@ -17,7 +19,7 @@ impl Game {
         }
     }
 
-    pub fn run(&self) {
+    pub fn run(&mut self) {
         // displays the initial board
         display_board(&self.board);
         loop{
@@ -39,18 +41,18 @@ impl Game {
                 continue;
             }
 
-            // if the player has a valid move, reads the input from the user
-            match get_input(&self.board, self.player) {
-                // if the input is valid
+            // player has valid moves, gets the input
+            match get_input(self.player) {
                 Ok((row, col)) => {
                     if make_move(&mut self.board, &self.player, row, col) {
                         display_board(&self.board);
+                        self.player = self.player.next();
                     } else {
                         print_invalid_move();
                     }
                 }
-                Err() => {
-                    print_invalid_move()(self.player);
+                Err(MoveError::InvalidMove) => {
+                    print_invalid_move();
                 }
             }
 
