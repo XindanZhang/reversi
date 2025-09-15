@@ -55,11 +55,9 @@ impl Game {
                     print_invalid_move();
                 }
             }
-
-
-            winner_output(self.player, &self.board);
-
         }
+
+        winner_output(self.player, &self.board);
 
 
     }
