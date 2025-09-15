@@ -1,11 +1,8 @@
 pub mod game;
 pub mod io;
 
-pub use game::game::Game;
 use crate::game::board::cnt_black_white;
-
-use crate::io::output::{print_invalid_move, print_no_valid_move};
-
+pub use game::game::Game;
 
 // black and white are the players
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -24,7 +21,7 @@ impl Player {
     }
 
     // chooses the next player to play
-    pub fn next(self) -> Self{
+    pub fn next(self) -> Self {
         match self {
             Player::Black => Player::White,
             Player::White => Player::Black,
@@ -51,7 +48,6 @@ impl Player {
         }
     }
 
-
     // shows the cell on the board
     pub fn display_cell(cell: Option<Player>) -> char {
         match cell {
@@ -59,7 +55,6 @@ impl Player {
             None => '.',
         }
     }
-
 }
 
 pub struct Coordinates {
@@ -71,7 +66,6 @@ impl Coordinates {
     pub fn new(row: u8, col: u8) -> Self {
         Self { row, col }
     }
-
 }
 
 // the board of the game

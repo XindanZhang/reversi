@@ -1,8 +1,8 @@
-use crate::{Board, Player, MoveError};
 use crate::game::board::{create_board, display_board};
 use crate::game::turns::{has_valid_move, make_move};
 use crate::io::input::get_input;
-use crate::io::output::{winner_output, print_invalid_move, print_no_valid_move};
+use crate::io::output::{print_invalid_move, print_no_valid_move, winner_output};
+use crate::{Board, InputError, Player};
 
 pub struct Game {
     board: Board,
@@ -22,17 +22,17 @@ impl Game {
     pub fn run(&mut self) {
         // displays the initial board
         display_board(&self.board);
-        loop{
-            // checks if the player has a valid move 
+        loop {
+            // checks if the player has a valid move
             // and if not, prints a message
-            if !has_valid_move(&self.board, &self.player) {
+            if !has_valid_move(&self.player) {
                 print_no_valid_move(self.player);
                 // switches to the next player
                 self.player = self.player.next();
 
-                // checks if the next player has a valid move 
+                // checks if the next player has a valid move
                 // and if not
-                if !has_valid_move(&self.board, &self.player) {
+                if !has_valid_move(&self.player) {
                     // prints the other player also has no valid move
                     print_no_valid_move(self.player);
                     // ends the game since both players have no valid move
@@ -51,14 +51,12 @@ impl Game {
                         print_invalid_move();
                     }
                 }
-                Err(MoveError::InvalidMove) => {
+                Err(InputError::InvalidFormat) => {
                     print_invalid_move();
                 }
             }
         }
 
         winner_output(self.player, &self.board);
-
-
     }
 }
