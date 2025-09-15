@@ -1,55 +1,40 @@
-use std::io::Write;
-use std::io;
-use crate::Player;
+use std::io::{self, Write};
+use crate::{Player, InputError};
 
-pub enum InputError {
-    // When there is no valid move for the player.
-    // prints "{} has no valid move."
-    NoValidMove,
-    // Invalid input from the user and retry is needed.
-    // prints "Invalid move. Try again."
-    InvalidMove,
-}
-
-pub fn get_input(player: Player) -> Option<(u8, u8)>{
+pub fn get_input(player: Player) -> Result<(u8, u8), InputError> {
     // gets the input from the user
     print!("Please enter move for colour {}: ", player.as_char());
     io::stdout().flush().expect("Failed to flush stdout.");
 
-    // creates a new string to store the input
-    let mut coordinates = String::new();
     // reads the input from the user
+    let mut coordinates = String::new();
     io::stdin()
         .read_line(&mut coordinates)
         .expect("Failed to read line.");
 
+    // trims the input
+    let trimmed_input = coordinates.trim();
+
+    // checks if there are two characters in the input
+    if trimmed_input.len() != 2 {
+        return Err(InputError::InvalidFormat);
+    }
+
     // gets the row and column from the input
-    let row = coordinates.trim().chars().next().unwrap() as u8 - b'a';
-    let col = coordinates.trim().chars().nth(1).unwrap() as u8 - b'1';
+    let mut chars = trimmed_input.chars();
+    let row_char = chars.next().unwrap().to_lowercase();
+    let col_char = chars.next().unwrap().to_lowercase();
 
-    // validates the input and returns the coordinates
-    match validate_input(row, col, player) {
-        Ok((row, col)) => Some((row, col)),
-        Err(InputError::NoValidMove) => {
-            println!("{} has no valid move.", player.as_char());
-            None
-        }
-        Err(InputError::InvalidMove) => {
-            println!("Invalid move. Try again.");
-            game.run();
-        }
+    // converts the chars to numbers
+    let row = row_char as u8 - b'a';
+    let col = col_char as u8 - b'a';
+
+    // checks if the row and column are out of bounds
+    if row >= 8 || col >= 8 {
+        return Err(InputError::InvalidFormat);
     }
-}
 
-// Validates the input.
-pub fn validate_input(row: u8, col: u8, player: Player) -> Result<(u8, u8), InputError> {
-    // checks if the coordinates are valid
-    if row < 8 && col < 8 {
-        Ok((row, col))
-    } else {
-        Err(InputError::InvalidMove)
-    }
-}
-
+    Ok((row, col))
+}   
 
 
