@@ -28,7 +28,7 @@ pub fn display_board(board: &Board) {
     println!("  abcdefgh");
     for (i, row) in board.iter().enumerate() {
         // prints the first column letter
-        print!("{}", char::from_u8(b'a' + i as u8).unwrap());
+        print!("{}", char::from(b'a' + i as u8));
         for cell in row {
             // prints the specific row cell
             // fn display_cell() is in lib.rs
