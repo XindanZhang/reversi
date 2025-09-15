@@ -25,21 +25,21 @@ impl Game {
         loop {
             // checks if the player has a valid move
             // and if not, prints a message
-            if !has_valid_move(&self.player) {
+            if !has_valid_move(&self.board, &self.player) {
                 print_no_valid_move(self.player);
                 // switches to the next player
                 self.player = self.player.next();
 
                 // checks if the next player has a valid move
                 // and if not
-                if !has_valid_move(&self.player) {
+                if !has_valid_move(&self.board, &self.player) {
                     // prints the other player also has no valid move
                     print_no_valid_move(self.player);
                     // ends the game since both players have no valid move
                     break;
                 }
                 continue;
-
+            }
 
             // player has valid moves, gets the input
             loop {
@@ -75,4 +75,5 @@ impl Game {
 
         winner_output(self.player, &self.board);
     }
+
 }
