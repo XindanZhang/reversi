@@ -1,8 +1,8 @@
 use crate::game::board::{create_board, display_board};
-use crate::game::moves::{has_valid_move, make_move};
+use crate::game::moves::{has_valid_move, is_valid_move, make_move};
 use crate::io::input::get_input;
 use crate::io::output::{print_invalid_move, print_no_valid_move, winner_output};
-use crate::{Board, InputError, Player};
+use crate::{Board, Coordinates, InputError, Player};
 
 pub struct Game {
     board: Board,
@@ -21,7 +21,7 @@ impl Game {
 
     pub fn run(&mut self) {
         // displays the initial board
-        display_board(&self.board);
+        // display_board(&self.board);
         loop {
             // checks if the player has a valid move
             // and if not, prints a message
@@ -42,17 +42,32 @@ impl Game {
             }
 
             // player has valid moves, gets the input
-            match get_input(self.player) {
-                Ok((row, col)) => {
-                    if make_move(&mut self.board, &self.player, row, col) {
-                        display_board(&self.board);
-                        self.player = self.player.next();
-                    } else {
-                        print_invalid_move();
+            loop {
+                display_board(&self.board);
+                match get_input(self.player) {
+                    Ok(coordinates) => {
+                        if is_valid_move(&self.board, &self.player, &coordinates) {
+                            if make_move(&mut self.board, &self.player, &coordinates) {
+                                self.player = self.player.next();
+                                break;
+                            }
+                        }
+                        // if the coordinates are invalid for current player to make a move
+                        else {
+                            print_invalid_move();
+                            continue;
+                        }
                     }
-                }
-                Err(InputError::InvalidFormat) => {
-                    print_invalid_move();
+                    // if the input is invalid format
+                    Err(InputError::InputInvalidFormat) => {
+                        print_invalid_move();
+                        continue;
+                    }
+                    // if the input is out of bounds
+                    Err(InputError::InputOutOfBounds) => {
+                        print_invalid_move();
+                        continue;
+                    }
                 }
             }
         }

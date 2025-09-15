@@ -1,9 +1,10 @@
+use crate::{Coordinates, InputError, Player};
 use std::io::{self, Write};
-use crate::{Player, InputError};
 
-pub fn get_input(player: Player) -> Result<(u8, u8), InputError> {
+pub fn get_input(player: Player) -> Result<Coordinates, InputError> {
     // gets the input from the user
     print!("Enter move for colour {} (RowCol): ", player.as_char());
+    // flushes the buffer to display the user prompt.
     io::stdout().flush().expect("Failed to flush stdout.");
 
     // reads the input from the user
@@ -12,12 +13,12 @@ pub fn get_input(player: Player) -> Result<(u8, u8), InputError> {
         .read_line(&mut coordinates)
         .expect("Failed to read line.");
 
-    // trims the input
+    // removes the whitespace
     let trimmed_input = coordinates.trim();
 
     // checks if there are two characters in the input
     if trimmed_input.len() != 2 {
-        return Err(InputError::InvalidFormat);
+        return Err(InputError::InputInvalidFormat);
     }
 
     // gets the row and column from the input
@@ -27,14 +28,15 @@ pub fn get_input(player: Player) -> Result<(u8, u8), InputError> {
 
     // validates characters are in valid range before converting
     if row_char < 'a' || row_char > 'h' || col_char < 'a' || col_char > 'h' {
-        return Err(InputError::InvalidFormat);
+        return Err(InputError::InputOutOfBounds);
     }
 
     // converts the chars to numbers
     let row = row_char as u8 - b'a';
     let col = col_char as u8 - b'a';
 
-    Ok((row, col))
-}   
-
-
+    // creates the coordinates
+    let coordinates = Coordinates::new(row, col);
+    // returns the coordinates
+    Ok(coordinates)
+}

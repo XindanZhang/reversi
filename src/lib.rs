@@ -74,5 +74,6 @@ pub type Board = [[Option<Player>; 8]; 8];
 // the error when the input is invalid
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum InputError {
-    InvalidFormat,
+    InputOutOfBounds,
+    InputInvalidFormat,
 }
