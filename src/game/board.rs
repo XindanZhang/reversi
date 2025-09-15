@@ -1,5 +1,6 @@
 use crate::{Board, Player};
 
+// Creates the board in the initial state.
 pub fn create_board() -> Board {
     let mut board: Board = [[None; 8]; 8];
 
@@ -22,7 +23,7 @@ pub fn create_board() -> Board {
     board
 }
 
-
+// Displays the board in the required format.
 pub fn display_board(board: &Board) {
     println!("  abcdefgh");
     for (i, row) in board.iter().enumerate() {
