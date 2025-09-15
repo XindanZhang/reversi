@@ -23,20 +23,33 @@ pub fn create_board() -> Board {
     board
 }
 
+// Counts the number of black and white pieces on the board.
+pub fn cnt_black_white(board: &Board) -> (u8, u8) {
+    let mut black_cnt = 0;
+    let mut white_cnt = 0;
+    for row in board{
+        for &cell in row{
+            match cell{
+                Some(Player::Black) => black_cnt +=1,
+                Some(Player::White) => white_cnt +=1,
+                None => {}
+            }
+        }
+    return (black_cnt, white_cnt);
+    }
+}
+
 // Displays the board in the required format.
 pub fn display_board(board: &Board) {
     println!("  abcdefgh");
     for (i, row) in board.iter().enumerate() {
         // prints the first column letter
         print!("{}", char::from(b'a' + i as u8));
-        for cell in row {
-            // prints the specific row cell
+        // prints the specific row cell
+        for &cell in row {
             // fn display_cell() is in lib.rs
             print!("{}", Player::display_cell(cell));
         }
         println!();
     }
-
-
 }
-

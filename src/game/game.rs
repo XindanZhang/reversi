@@ -1,3 +1,5 @@
+use crate::{Board, Player, Coordinates};
+use crate::game::board::{create_board, display_board};
 
 pub struct Game {
     board: Board,
