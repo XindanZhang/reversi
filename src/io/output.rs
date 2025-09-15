@@ -7,3 +7,11 @@ pub fn winner_output(winner: Player, board: &Board){
         _ => println!("{} wins by {} points!", winner.as_char(), points),
     }
 }
+
+pub fn print_invalid_move(){
+    println!("Invalid move. Try again.");
+}
+
+pub fn print_no_valid_move(player: Player){
+    println!("{} has no valid move.", player.as_char());
+}
