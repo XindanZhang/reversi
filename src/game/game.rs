@@ -39,23 +39,24 @@ impl Game {
                     break;
                 }
                 continue;
-            }
+
 
             // player has valid moves, gets the input
             loop {
                 display_board(&self.board);
                 match get_input(self.player) {
                     Ok(coordinates) => {
-                        if is_valid_move(&self.board, &self.player, &coordinates) {
-                            if make_move(&mut self.board, &self.player, &coordinates) {
-                                self.player = self.player.next();
-                                break;
+                        match is_valid_move(&self.board, &self.player, &coordinates) {
+                            Ok(_) => {
+                                if make_move(&mut self.board, &self.player, &coordinates) {
+                                    self.player = self.player.next();
+                                    break;
+                                }
                             }
-                        }
-                        // if the coordinates are invalid for current player to make a move
-                        else {
-                            print_invalid_move();
-                            continue;
+                            Err(_) => {
+                                print_invalid_move();
+                                continue;
+                            }
                         }
                     }
                     // if the input is invalid format
