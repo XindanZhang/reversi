@@ -2,6 +2,7 @@ pub mod game;
 pub mod io;
 
 pub use game::game::Game;
+use crate::game::board::cnt_black_white;
 
 
 // black and white are the players
@@ -36,6 +37,20 @@ impl Player {
         }
     }
 
+    // shows the winner points
+    pub fn winner_points(self, board: &Board) -> u8 {
+        let (black_cnt, white_cnt) = cnt_black_white(board);
+        if black_cnt > white_cnt {
+            black_cnt - white_cnt
+        } else if black_cnt < white_cnt {
+            white_cnt - black_cnt
+        } else {
+            0
+        }
+    }
+
+
+    // shows the cell on the board
     pub fn display_cell(cell: Option<Player>) -> char {
         match cell {
             Some(player) => player.as_char(),
