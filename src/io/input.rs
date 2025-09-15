@@ -3,7 +3,7 @@ use crate::{Player, InputError};
 
 pub fn get_input(player: Player) -> Result<(u8, u8), InputError> {
     // gets the input from the user
-    print!("Please enter move for colour {}: ", player.as_char());
+    print!("Enter move for colour {} (RowCol): ", player.as_char());
     io::stdout().flush().expect("Failed to flush stdout.");
 
     // reads the input from the user
@@ -21,18 +21,18 @@ pub fn get_input(player: Player) -> Result<(u8, u8), InputError> {
     }
 
     // gets the row and column from the input
-    let mut chars = trimmed_input.chars();
-    let row_char = chars.next().unwrap().to_lowercase();
-    let col_char = chars.next().unwrap().to_lowercase();
+    let chars: Vec<char> = trimmed_input.to_lowercase().chars().collect();
+    let row_char = chars[0];
+    let col_char = chars[1];
+
+    // validates characters are in valid range before converting
+    if row_char < 'a' || row_char > 'h' || col_char < 'a' || col_char > 'h' {
+        return Err(InputError::InvalidFormat);
+    }
 
     // converts the chars to numbers
     let row = row_char as u8 - b'a';
     let col = col_char as u8 - b'a';
-
-    // checks if the row and column are out of bounds
-    if row >= 8 || col >= 8 {
-        return Err(InputError::InvalidFormat);
-    }
 
     Ok((row, col))
 }   
