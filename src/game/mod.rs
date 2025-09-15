@@ -1,3 +1,3 @@
-pub mod game;
 pub mod board;
-pub mod turns;
+pub mod game;
+pub mod moves;

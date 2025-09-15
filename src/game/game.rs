@@ -1,5 +1,5 @@
 use crate::game::board::{create_board, display_board};
-use crate::game::turns::{has_valid_move, make_move};
+use crate::game::moves::{has_valid_move, make_move};
 use crate::io::input::get_input;
 use crate::io::output::{print_invalid_move, print_no_valid_move, winner_output};
 use crate::{Board, InputError, Player};
