@@ -41,14 +41,15 @@ impl Game {
                 continue;
             }
 
-            // player has valid moves, get input
-            // shows board after a successful move
+            // if player has valid moves
             loop {
+                // prints the prompt text after printing input error messages
                 print_prompt_text(self.player);
                 match get_input() {
                     Ok(coordinates) => {
                         if is_valid_move(&self.board, &self.player, &coordinates) {
                             if make_move(&mut self.board, &self.player, &coordinates) {
+                                // shows board after a successful move
                                 display_board(&self.board);
                                 self.player = self.player.next();
                                 break;
@@ -74,5 +75,4 @@ impl Game {
 
         winner_output(self.player, &self.board);
     }
-
 }
