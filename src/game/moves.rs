@@ -70,30 +70,49 @@ fn can_flip(board: &Board, player: &Player, coordinates: &Coordinates, direction
     false
 }
 
-fn positions_to_flip(
-    board: &Board,
-    player: &Player,
-    coordinates: &Coordinates,
-    direction: &(i8, i8),
-) -> Vec<Coordinates> {
+/// Get the vector of positions to flip in a specific direction.
+fn positions_to_flip(board: &Board, player: &Player, coordinates: &Coordinates, direction: &(i8, i8)) -> Vec<Coordinates> {
     let mut positions = Vec::new();
     let mut row = coordinates.row as i8 + direction.0;
     let mut col = coordinates.col as i8 + direction.1;
 
     while row < 8 && col < 8 && row >= 0 && col >= 0 {
-        if board[row as usize][col as usize].is_some() {
-            return positions;
+        match board[row as usize][col as usize] {
+            Some(pos) if pos == player2 => {
+                positions.push(Coordinates::new(row as u8, col as u8));
+            }
+            Some(pos) if pos == *player => {
+                return positions;
+            }
+            _ => return vec![],
         }
-        // adds the position to the list
-        positions.push(Coordinates::new(row as u8, col as u8));
         row += direction.0;
         col += direction.1;
     }
     positions
 }
 
-// flip disks
-pub fn make_move(board: &mut Board, player: &Player, coordinates: &Coordinates) -> bool {}
+/// Flip the pieces in all valid directions.
+pub fn flip_pieces(board: &mut Board, player: &Player, coordinates: &Coordinates) {
+    // places the new piece on the board
+    board[coordinates.row as usize][coordinates.col as usize] = Some(*player);
+
+    // gets all the vector of positions to flip
+    let positions = positions_to_flip(board, player, coordinates, direction);
+    for pos in positions {
+        // flips the pieces on the board
+        board[pos.row as usize][pos.col as usize] = Some(*player);
+    }
+}
+
+pub fn make_move(board: &mut Board, player: &Player, coordinates: &Coordinates) -> bool {
+    if is_valid_move(board, player, coordinates) {
+        // implements the flip pieces.
+        flip_pieces(board, player, coordinates);
+        return true;
+    }
+    false
+}
 
 pub fn has_valid_move(board: &Board, player: &Player) -> bool {
     for row in 0..8 {
