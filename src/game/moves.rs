@@ -49,13 +49,13 @@ pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) 
 fn can_flip(board: &Board, player: &Player, coordinates: &Coordinates, direction: &(i8, i8)) -> bool {
     let mut row = coordinates.row as i8 + direction.0;
     let mut col = coordinates.col as i8 + direction.1;
-    let player2 = player.next();
+    let next_player = player.next();
     let mut flag = false;
 
     // while the position is in bounds
     while row < 8 && col < 8 && row >= 0 && col >= 0 {
         match board[row as usize][col as usize] {
-            Some(pos) if pos == player2 => {
+            Some(pos) if pos == next_player => {
                 flag = true;
             }
             Some(pos) if pos == *player => {
@@ -78,7 +78,7 @@ fn positions_to_flip(board: &Board, player: &Player, coordinates: &Coordinates, 
 
     while row < 8 && col < 8 && row >= 0 && col >= 0 {
         match board[row as usize][col as usize] {
-            Some(pos) if pos == player2 => {
+            Some(pos) if pos == next_player => {
                 positions.push(Coordinates::new(row as u8, col as u8));
             }
             Some(pos) if pos == *player => {
