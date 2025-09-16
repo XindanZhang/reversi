@@ -1,39 +1,113 @@
 use crate::{Board, Coordinates, Player};
 
-
-pub fn flip_disks(board: &mut Board, player: &Player, coordinates: &Coordinates) -> Board {
-    // TODO: Implement the flip disks function.
+fn all_directions() -> [(usize, usize); 8] {
+    // 8 directions around the center piece
+    [
+        (-1, -1),
+        (-1, 0),
+        (-1, 1),
+        (0, -1),
+        (0, 1),
+        (1, -1),
+        (1, 0),
+        (1, 1),
+    ]
 }
 
-pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) -> Result<bool, MoveError> {
-    if board[coordinates.row][coordinates.col].is_some() {
+/// There are two cases for an invalid move:
+/// If the position is not empty, return false
+/// If the position doesn't exist in the 8 possible positions, return false
+pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) -> bool {
+    // if the position is not empty, return false
+    if board[coordinates.row as usize][coordinates.col as usize].is_some() {
         return false;
     }
-    
+
+    for direction in all_directions().iter() {
+        // current row adds one of the directions
+        let mut row = coordinates.row as usize + direction.0;
+        let mut col = coordinates.col as usize + direction.1;
+
+        // if the position is out of bounds, return false
+        if row < 0 || row >= 8 || col < 0 || col >= 8 {
+            break;
+        }
+
+        // if the position is occupied, checks if the player can flip the disk in that direction
+        if board[row][col].is_some() {
+            if can_flip(board, player, coordinates, direction) {
+                return true;
+            }
+            break;
+        }
+    }
     false
 }
 
-// flip disks
-pub fn make_move(board: &mut Board, player: &Player, coordinates: &Coordinates) -> bool {
-    // TODO: Implement the make move function.
-    flip_disks();
+/// Check if the player can flip the disk in the given direction.
+fn can_flip(
+    board: &Board,
+    player: Player,
+    coordinates: &Coordinates,
+    direction: (usize, usize),
+) -> bool {
+    let mut row = coordinates.row as usize + direction.0;
+    let mut col = coordinates.col as usize + direction.1;
 
-    true
+    // while the position is in bounds
+    while row < 8 && col < 8 && row >= 0 && col >= 0 {
+        if board[row as usize][col as usize].is_none() {
+            return false;
+        }
+        if board[row as usize][col as usize] == Some(player) {
+            return true;
+        }
+        // move to the next position
+        row += direction.0;
+        col += direction.1;
+    }
+    false
 }
 
+fn positions_to_flip(
+    board: &Board,
+    player: &Player,
+    coordinates: &Coordinates,
+    direction: (u8, u8),
+) -> Vec<Coordinates> {
+    let mut positions = Vec::new();
+    let mut row = coordinates.row as u8 + direction.0;
+    let mut col = coordinates.col as u8 + direction.1;
 
-// check if the player has any valid moves
+    while row < 8 && col < 8 && row >= 0 && col >= 0 {
+        if board[row as usize][col as usize].is_some() {
+            return positions;
+        }
+        // adds the position to the list
+        positions.push(Coordinates::new(row, col));
+        row += direction.0;
+        col += direction.1;
+    }
+    positions
+}
+
+// flip disks
+pub fn make_move(board: &mut Board, player: &Player, coordinates: &Coordinates) -> bool {}
+
 pub fn has_valid_move(board: &Board, player: &Player) -> bool {
     for row in 0..8 {
         for col in 0..8 {
+            // checks all the empty positions on the current board
             if board[row][col].is_none() {
                 let coordinates = Coordinates::new(row as u8, col as u8);
+                // checks if any of the empty positions are valid moves
+                // if one is valid, the player has a valid move
+                // returns true
                 if is_valid_move(board, player, &coordinates) {
                     return true;
                 }
             }
         }
     }
-    false 
+    false
 }
-
