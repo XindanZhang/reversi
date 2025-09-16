@@ -35,6 +35,7 @@ pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) 
 
         // if the position is occupied, checks if the player can flip the disk in that direction
         if board[row as usize][col as usize].is_some() {
+            // search if the player can flip the disk till the same color is found
             if can_flip(board, player, coordinates, direction) {
                 return true;
             }
@@ -45,17 +46,22 @@ pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) 
 }
 
 /// Check if the player can flip the disk in the given direction.
-fn can_flip(board: &Board, player: Player, coordinates: &Coordinates, direction: (i8, i8)) -> bool {
+fn can_flip(board: &Board, player: &Player, coordinates: &Coordinates, direction: &(i8, i8)) -> bool {
     let mut row = coordinates.row as i8 + direction.0;
     let mut col = coordinates.col as i8 + direction.1;
+    let player2 = player.next();
+    let mut flag = false;
 
     // while the position is in bounds
     while row < 8 && col < 8 && row >= 0 && col >= 0 {
-        if board[row as usize][col as usize].is_none() {
-            return false;
-        }
-        if board[row as usize][col as usize] == Some(player) {
-            return true;
+        match board[row as usize][col as usize] {
+            Some(pos) if pos == player2 => {
+                flag = true;
+            }
+            Some(pos) if pos == *player => {
+                return flag;
+            }
+            _ => return false,
         }
         // move to the next position
         row += direction.0;
@@ -68,7 +74,7 @@ fn positions_to_flip(
     board: &Board,
     player: &Player,
     coordinates: &Coordinates,
-    direction: (i8, i8),
+    direction: &(i8, i8),
 ) -> Vec<Coordinates> {
     let mut positions = Vec::new();
     let mut row = coordinates.row as i8 + direction.0;
