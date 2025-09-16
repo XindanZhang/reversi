@@ -1,6 +1,6 @@
 use crate::{Board, Coordinates, Player};
 
-fn all_directions() -> [(usize, usize); 8] {
+fn all_directions() -> [(i8, i8); 8] {
     // 8 directions around the center piece
     [
         (-1, -1),
@@ -25,8 +25,8 @@ pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) 
 
     for direction in all_directions().iter() {
         // current row adds one of the directions
-        let mut row = coordinates.row as usize + direction.0;
-        let mut col = coordinates.col as usize + direction.1;
+        let mut row = coordinates.row as i8 + direction.0;
+        let mut col = coordinates.col as i8 + direction.1;
 
         // if the position is out of bounds, return false
         if row < 0 || row >= 8 || col < 0 || col >= 8 {
@@ -34,7 +34,7 @@ pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) 
         }
 
         // if the position is occupied, checks if the player can flip the disk in that direction
-        if board[row][col].is_some() {
+        if board[row as usize][col as usize].is_some() {
             if can_flip(board, player, coordinates, direction) {
                 return true;
             }
@@ -45,14 +45,9 @@ pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) 
 }
 
 /// Check if the player can flip the disk in the given direction.
-fn can_flip(
-    board: &Board,
-    player: Player,
-    coordinates: &Coordinates,
-    direction: (usize, usize),
-) -> bool {
-    let mut row = coordinates.row as usize + direction.0;
-    let mut col = coordinates.col as usize + direction.1;
+fn can_flip(board: &Board, player: Player, coordinates: &Coordinates, direction: (i8, i8)) -> bool {
+    let mut row = coordinates.row as i8 + direction.0;
+    let mut col = coordinates.col as i8 + direction.1;
 
     // while the position is in bounds
     while row < 8 && col < 8 && row >= 0 && col >= 0 {
@@ -73,18 +68,18 @@ fn positions_to_flip(
     board: &Board,
     player: &Player,
     coordinates: &Coordinates,
-    direction: (u8, u8),
+    direction: (i8, i8),
 ) -> Vec<Coordinates> {
     let mut positions = Vec::new();
-    let mut row = coordinates.row as u8 + direction.0;
-    let mut col = coordinates.col as u8 + direction.1;
+    let mut row = coordinates.row as i8 + direction.0;
+    let mut col = coordinates.col as i8 + direction.1;
 
     while row < 8 && col < 8 && row >= 0 && col >= 0 {
         if board[row as usize][col as usize].is_some() {
             return positions;
         }
         // adds the position to the list
-        positions.push(Coordinates::new(row, col));
+        positions.push(Coordinates::new(row as u8, col as u8));
         row += direction.0;
         col += direction.1;
     }
