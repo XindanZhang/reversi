@@ -1,7 +1,4 @@
-mod game;
-mod io;
-
-use reversi::{Game, Board, Player, Coordinates, InputError};
+use reversi::Game;
 
 fn main() {
     let mut game = Game::new();

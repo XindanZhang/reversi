@@ -45,7 +45,7 @@ impl Game {
             // shows board after a successful move
             loop {
                 print_prompt_text(self.player);
-                match get_input(self.player) {
+                match get_input() {
                     Ok(coordinates) => {
                         if is_valid_move(&self.board, &self.player, &coordinates) {
                             if make_move(&mut self.board, &self.player, &coordinates) {

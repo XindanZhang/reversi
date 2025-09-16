@@ -6,12 +6,7 @@ pub fn print_prompt_text(player: Player) {
     io::stdout().flush().expect("Failed to flush stdout.");
 }
 
-pub fn get_input(player: Player) -> Result<Coordinates, InputError> {
-    // gets the input from the user
-    // print!("Enter move for colour {} (RowCol): ", player.as_char());
-    // flushes the buffer to display the user prompt.
-    // io::stdout().flush().expect("Failed to flush stdout.");
-
+pub fn get_input() -> Result<Coordinates, InputError> {
     // reads the input from the user
     let mut coordinates = String::new();
     io::stdin()
