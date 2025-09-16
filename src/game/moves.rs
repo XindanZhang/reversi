@@ -18,35 +18,26 @@ fn all_directions() -> [(i8, i8); 8] {
 /// If the position is not empty, return false
 /// If the position doesn't exist in the 8 possible positions, return false
 pub fn is_valid_move(board: &Board, player: &Player, coordinates: &Coordinates) -> bool {
-    // if the position is not empty, return false
+    // if the position is occupied, false
     if board[coordinates.row as usize][coordinates.col as usize].is_some() {
         return false;
     }
-
-    for direction in all_directions().iter() {
-        // current row adds one of the directions
-        let mut row = coordinates.row as i8 + direction.0;
-        let mut col = coordinates.col as i8 + direction.1;
-
-        // if the position is out of bounds, return false
-        if row < 0 || row >= 8 || col < 0 || col >= 8 {
-            break;
-        }
-
-        // if the position is occupied, checks if the player can flip the disk in that direction
-        if board[row as usize][col as usize].is_some() {
-            // search if the player can flip the disk till the same color is found
-            if can_flip(board, player, coordinates, direction) {
-                return true;
-            }
-            break;
+    // if the position is
+    for direction in all_directions() {
+        if can_flip(board, player, coordinates, direction) {
+            return true;
         }
     }
     false
 }
 
 /// Check if the player can flip the disk in the given direction.
-fn can_flip(board: &Board, player: &Player, coordinates: &Coordinates, direction: &(i8, i8)) -> bool {
+fn can_flip(
+    board: &Board,
+    player: &Player,
+    coordinates: &Coordinates,
+    direction: (i8, i8),
+) -> bool {
     let mut row = coordinates.row as i8 + direction.0;
     let mut col = coordinates.col as i8 + direction.1;
     let next_player = player.next();
@@ -71,8 +62,14 @@ fn can_flip(board: &Board, player: &Player, coordinates: &Coordinates, direction
 }
 
 /// Get the vector of positions to flip in a specific direction.
-fn positions_to_flip(board: &Board, player: &Player, coordinates: &Coordinates, direction: &(i8, i8)) -> Vec<Coordinates> {
+fn positions_to_flip(
+    board: &Board,
+    player: &Player,
+    coordinates: &Coordinates,
+    direction: (i8, i8),
+) -> Vec<Coordinates> {
     let mut positions = Vec::new();
+    let next_player = player.next();
     let mut row = coordinates.row as i8 + direction.0;
     let mut col = coordinates.col as i8 + direction.1;
 
@@ -89,7 +86,7 @@ fn positions_to_flip(board: &Board, player: &Player, coordinates: &Coordinates, 
         row += direction.0;
         col += direction.1;
     }
-    positions
+    vec![]
 }
 
 /// Flip the pieces in all valid directions.
