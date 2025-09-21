@@ -95,10 +95,12 @@ pub fn flip_pieces(board: &mut Board, player: &Player, coordinates: &Coordinates
     board[coordinates.row as usize][coordinates.col as usize] = Some(*player);
 
     // gets all the vector of positions to flip
-    let positions = positions_to_flip(board, player, coordinates, direction);
-    for pos in positions {
-        // flips the pieces on the board
-        board[pos.row as usize][pos.col as usize] = Some(*player);
+    for direction in all_directions() {
+        let positions = positions_to_flip(board, player, coordinates, direction);
+        for pos in positions {
+            // flips the pieces on the board
+            board[pos.row as usize][pos.col as usize] = Some(*player);
+        }
     }
 }
 
