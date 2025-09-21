@@ -53,20 +53,27 @@ impl Game {
                                 display_board(&self.board);
                                 self.player = self.player.next();
                                 break;
+                            } else {
+                                print_invalid_move();
+                                display_board(&self.board);
+                                continue;
                             }
                         } else {
                             print_invalid_move();
+                            display_board(&self.board);
                             continue;
                         }
                     }
                     // if the input is invalid format
                     Err(InputError::InputInvalidFormat) => {
                         print_invalid_move();
+                        display_board(&self.board);
                         continue;
                     }
                     // if the input is out of bounds
                     Err(InputError::InputOutOfBounds) => {
                         print_invalid_move();
+                        display_board(&self.board);
                         continue;
                     }
                 }
